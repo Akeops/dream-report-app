@@ -10,6 +10,7 @@ const { width } = Dimensions.get('window');
 export default function DreamForm() {
     const [dreamText, setDreamText] = useState('');
     const [isLucidDream, setIsLucidDream] = useState(false);
+    const [isNightmare, setIsNightmare] = useState(false);
     const newDreamId = uuidv4();
     console.log(newDreamId);
 
@@ -26,8 +27,9 @@ export default function DreamForm() {
         try {
             const newDreamToPush: DreamData = {
                 id: uuidv4(),
-                text: dreamText, // Utilisation de dreamText ici
+                text: dreamText,
                 isLucid: isLucidDream,
+                isNightmare: isNightmare,
                 isChecked: false,
                 apiInfo: {
                     conceptList: [],
@@ -105,6 +107,17 @@ return (
                 >
                     Rêve Lucide
                 </Chip>
+                <Chip
+                    mode="outlined"
+                    selected={isNightmare}
+                    onPress={() => setIsNightmare(!isNightmare)}
+                    selectedColor="#1aaac0"
+                    style={{ backgroundColor: isNightmare ? "#952424" : "transparent", borderColor: "#000000" }}
+                    textStyle={{ color: isNightmare ? "#D9F01F" : "#1000000" }}
+                    showSelectedCheck={false}
+                >
+                    Cauchemar
+                </Chip>
             </View>
         </View>
             
@@ -119,7 +132,7 @@ return (
 }
 
 const styles = StyleSheet.create({
-        container: {
+    container: {
         padding: 16,
     },
     input: {

@@ -42,6 +42,9 @@ const DreamList: React.FC = () => {
 
   const removeCheckedDreams = async () => {
     const uncheckedDreams = dreams.filter(dream => !dream.isChecked);
+    const checkedColor = "#6200EE"; // Exemple: violet
+    // La couleur de la checkbox quand elle n'est pas cochée
+    const uncheckedColor = "#000"; // Exemple: noir
 
     // Mettre à jour l'état local
     setDreams(uncheckedDreams);
@@ -67,16 +70,35 @@ const DreamList: React.FC = () => {
 
   return (
       <View style={styles.listContainer}>
-        <Text style={styles.title}>Liste des Rêves :</Text>
         {dreams.map((dream) => (
-            <View key={dream.id} style={styles.dreamItem}>
+            <View
+                key={dream.id}
+                style={[
+                  styles.dreamItem,
+                  {
+                    // Appliquer la couleur de bordure basée sur la catégorie
+                    borderColor: dream.isLucid ? '#068f37' : dream.isNightmare ? '#b40000' : '#298091',
+                    // Appliquer un fond subtil
+                    backgroundColor: dream.isLucid ? '#03b642' : dream.isNightmare ? '#da0000' : '#49bac7',
+                  }
+                ]}
+            >
               <Checkbox
                   status={dream.isChecked ? 'checked' : 'unchecked'}
                   onPress={() => handleCheckboxChange(dream.id)}
+                  color={dream.isChecked ? "#3d3d3d" : "#3d3d3d"} // Appliquer la couleur basée sur l'état isChecked
+                  uncheckedColor={"#3d3d3d"} // Couleur quand la checkbox n'est pas cochée (seulement pour certaines versions)
               />
-              <Text style={styles.dreamText}>
-                {dream.text} - {dream.isLucid ? 'Lucide' : 'Non Lucide'}
-
+              <Text
+                  style={[
+                    styles.dreamText,
+                    {
+                      // Changer la couleur du texte basée sur la catégorie si désiré
+                      color: dream.isLucid ? '#000000' : dream.isNightmare ? '#000000' : '#000000',
+                    }
+                  ]}
+              >
+                {dream.text} {dream.isLucid ? '- Lucide' : dream.isNightmare ? '- Cauchemar' : ''}
               </Text>
             </View>
         ))}
@@ -85,7 +107,7 @@ const DreamList: React.FC = () => {
         )}
         {isAnyDreamChecked && (
             <View style={styles.deleteButtonContainer}>
-              <Button title="Supprimer" onPress={removeCheckedDreams} color="#5396c2" />
+              <Button title="Supprimer" onPress={removeCheckedDreams} color="#292929" />
             </View>
 
         )}
@@ -102,23 +124,18 @@ const styles = StyleSheet.create({
   dreamText: {
     flex: 1,
     fontSize: 16,
-    marginRight: 10,
+    marginLeft: 10,
   },
   listContainer: {
-    borderWidth: 1,
-    borderColor: '#4c99e5',
-    borderRadius: 5,
     padding: 10,
   },
   dreamItem: {
-    flexDirection: 'row', // Organise le texte et la checkbox en ligne
-    alignItems: 'center', // Centre les éléments verticalement
-    backgroundColor: '#f0f0f0', // Un fond légèrement gris pour chaque élément
-    padding: 10, // Ajoute de l'espace autour du contenu de chaque élément
-    borderBottomWidth: 1, // Ajoute une bordure en bas pour séparer les éléments
-    borderRadius: 10,
-    borderColor: '#94c8eb', // Couleur de la bordure
-    marginBottom: 5, // Espacement entre les éléments
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    marginVertical: 4,
+    borderWidth: 2, // Met en évidence la couleur de la bordure
+    borderRadius: 15, // Adoucit les bords
   },
   deleteButtonContainer: {
     borderRadius: 20,
@@ -129,7 +146,13 @@ const styles = StyleSheet.create({
     color: 'green', // ou toute autre couleur selon votre design
     textAlign: 'center',
     padding: 10,
-  }
+  },
+  lucidDream: {
+    backgroundColor: '#ADD8E6', // Exemple de couleur pour les rêves lucides
+  },
+  nightmareDream: {
+    backgroundColor: '#952424', // Exemple de couleur pour les cauchemars
+  },
 });
 
 export default DreamList;
