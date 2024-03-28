@@ -3,17 +3,15 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import { TextInput, Button, Checkbox, Chip, Text } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DreamData } from '../models/types'; // Ajustez le chemin selon votre structure de fichiers
+import { v4 as uuidv4 } from 'uuid';
 
 const { width } = Dimensions.get('window');
-
-interface ApiInfo {
-    conceptList: string[];
-    entitiesList: string[];
-}
 
 export default function DreamForm() {
     const [dreamText, setDreamText] = useState('');
     const [isLucidDream, setIsLucidDream] = useState(false);
+    const newDreamId = uuidv4();
+    console.log(newDreamId);
 
     const handleResetDream = async () => {
        try {
@@ -26,9 +24,11 @@ export default function DreamForm() {
 
     const handleDreamSubmission = async () => {
         try {
-            let newDreamToPush: DreamData = {
+            const newDreamToPush: DreamData = {
+                id: uuidv4(),
                 text: dreamText, // Utilisation de dreamText ici
                 isLucid: isLucidDream,
+                isChecked: false,
                 apiInfo: {
                     conceptList: [],
                     entitiesList: []
@@ -72,14 +72,7 @@ export default function DreamForm() {
         setDreamText('');
         setIsLucidDream(false);
     };
-    interface DreamData {
-        text: string;
-        isLucid: boolean;
-        apiInfo: {
-            conceptList: string[];
-            entitiesList: string[];
-        };
-    }
+
 return (
     <View style={styles.container}>
         <TextInput
