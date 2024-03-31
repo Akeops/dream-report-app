@@ -16,14 +16,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start', // modifié pour aligner les éléments au début du conteneur
+    paddingTop: 0, // modifié pour réduire l'espace au-dessus du titre
   },
   title: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
+    marginTop: 20, // ajouté pour un peu d'espace au-dessus du titre
+    marginBottom: 0,  // réduit pour diminuer l'espace entre le titre et la séparateur
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 20, // réduit pour moins d'espace entre le titre et la liste
     height: 1,
     width: '80%',
   },
