@@ -77,9 +77,9 @@ const DreamList: React.FC = () => {
                   styles.dreamItem,
                   {
                     // Appliquer la couleur de bordure basée sur la catégorie
-                    borderColor: dream.isLucid ? '#068f37' : dream.isNightmare ? '#b40000' : '#298091',
+                    borderColor: dream.isLucid ? '#3d3d3d' : dream.isNightmare ? '#3d3d3d' : '#3d3d3d',
                     // Appliquer un fond subtil
-                    backgroundColor: dream.isLucid ? '#03b642' : dream.isNightmare ? '#da0000' : '#49bac7',
+                    backgroundColor: dream.isLucid ? '#15a426' : dream.isNightmare ? '#aa0a0a' : '#158a8c',
                   }
                 ]}
             >

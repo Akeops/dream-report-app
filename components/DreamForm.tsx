@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { TextInput, Button, Checkbox, Chip, Text } from 'react-native-paper';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { TextInput, Snackbar, Chip, Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DreamData } from '../models/types'; // Ajustez le chemin selon votre structure de fichiers
 import { v4 as uuidv4 } from 'uuid';
+import { DreamData } from '../models/types';
 
 const { width } = Dimensions.get('window');
 
@@ -11,8 +11,7 @@ export default function DreamForm() {
     const [dreamText, setDreamText] = useState('');
     const [isLucidDream, setIsLucidDream] = useState(false);
     const [isNightmare, setIsNightmare] = useState(false);
-    const newDreamId = uuidv4();
-    console.log(newDreamId);
+    const [isSnackbarVisible, setIsSnackbarVisible] = useState(false);
 
     const handleResetDream = async () => {
        try {
@@ -24,6 +23,11 @@ export default function DreamForm() {
     };
 
     const handleDreamSubmission = async () => {
+
+        if (dreamText.trim() === '') {
+            setIsSnackbarVisible(true);
+            return;
+        }
         try {
             const newDreamToPush: DreamData = {
                 id: uuidv4(),
@@ -75,76 +79,162 @@ export default function DreamForm() {
         setIsLucidDream(false);
     };
 
-return (
-    <View style={styles.container}>
-        <TextInput
-            label="Rêve"
-            editable={true} // Permet d'y mettre du texte.
-            value={dreamText}
-            onChangeText={(text) => setDreamText(text)}
-            mode="outlined"
-            multiline
-            outlineColor={"#1aaac0"}
-            textColor={"black"}
-            numberOfLines={3}
-            style={[
-                styles.input,
-                { width: width * 0.8, alignSelf: 'center', backgroundColor: 'white' }
-            ]} // Pour que l'input fasse 80% de la largeur de l'écran.
-        />
+    const handleLucidDreamToggle = () => {
+        setIsLucidDream(!isLucidDream); // Change l'état de Rêve Lucide
+        if (isNightmare) {
+            setIsNightmare(false); // Décoche automatiquement Cauchemar si coché
+        }
+    };
 
-        <View style={{ flexDirection: 'column' }}>
-            <Text>Catégories: {"\n"}</Text>
+    // Lorsque l'utilisateur sélectionne "Cauchemar"
+    const handleNightmareToggle = () => {
+        setIsNightmare(!isNightmare); // Change l'état de Cauchemar
+        if (isLucidDream) {
+            setIsLucidDream(false); // Décoche automatiquement Rêve Lucide si coché
+        }
+    }
+
+    return (
+        <View style={styles.container}>
+            <Snackbar
+                visible={isSnackbarVisible}
+                onDismiss={() => setIsSnackbarVisible(false)}
+                duration={3000}
+                style={styles.snackbar}
+            >
+                Le champ du rêve ne peut pas être vide.
+            </Snackbar>
+
+            <TextInput
+                label="Rêve"
+                value={dreamText}
+                onChangeText={setDreamText}
+                mode="outlined"
+                textColor={"black"}
+                multiline
+                numberOfLines={3}
+                style={styles.input}
+            />
+
+            <Text style={styles.categoryText}>Catégories:</Text>
             <View style={styles.checkboxContainer}>
                 <Chip
                     mode="outlined"
                     selected={isLucidDream}
-                    onPress={() => setIsLucidDream(!isLucidDream)}
-                    selectedColor="#1aaac0"
-                    style={{ backgroundColor: isLucidDream ? "#1aaac0" : "transparent", borderColor: "#1aaac0" }}
-                    textStyle={{ color: isLucidDream ? "#ffffff" : "#1aaac0" }}
-                    showSelectedCheck={false}
+                    onPress={handleLucidDreamToggle}
+                    style={[
+                        styles.chip,
+                        {
+                            backgroundColor: isLucidDream ? "#4FC3F7" : "#d1d1d1", // Bleu ciel pour sélectionné, gris sinon
+                            borderColor: "#d1d1d1", // Gris pour la bordure
+                        }
+                    ]}
+                    textStyle={[styles.chipText, isLucidDream ? { color: "#FFFFFF" } : { color: "#000000" }]} // Blanc si sélectionné, noir sinon
                 >
                     Rêve Lucide
                 </Chip>
+
                 <Chip
                     mode="outlined"
                     selected={isNightmare}
-                    onPress={() => setIsNightmare(!isNightmare)}
-                    selectedColor="#1aaac0"
-                    style={{ backgroundColor: isNightmare ? "#952424" : "transparent", borderColor: "#000000" }}
-                    textStyle={{ color: isNightmare ? "#D9F01F" : "#1000000" }}
-                    showSelectedCheck={false}
+                    onPress={handleNightmareToggle}
+                    style={[
+                        styles.chip,
+                        {
+                            backgroundColor: isNightmare ? "#b81d1d" : "#d1d1d1", // Orange pour sélectionné, gris sinon
+                            borderColor: "#d1d1d1", // Gris pour la bordure, uniforme avec l'autre Chip
+                        }
+                    ]}
+                    textStyle={[styles.chipText, isNightmare ? { color: "#FFFFFF" } : { color: "#000000" }]} // Blanc si sélectionné, noir sinon
                 >
                     Cauchemar
                 </Chip>
             </View>
+
+            <View style={styles.buttonContainer}>
+                <Button
+                    mode="contained"
+                    onPress={handleDreamSubmission}
+                    style={[styles.button, styles.submitButton]}
+                    labelStyle={styles.buttonText}
+                >
+                    Soumettre
+                </Button>
+
+                <Button
+                    mode="contained"
+                    onPress={handleResetDream}
+                    style={[styles.button, styles.resetButton]}
+                    labelStyle={styles.buttonText}
+                >
+                    Reset
+                </Button>
+            </View>
         </View>
-            
-        <Button mode="contained" onPress={handleDreamSubmission} style={styles.button} buttonColor="#1989a1">
-            Soumettre
-        </Button>
-        <Button mode="contained" onPress={handleResetDream} style={styles.button} buttonColor="#1989a1">
-            Reset
-        </Button>
-    </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         padding: 16,
+        justifyContent: 'center',
     },
     input: {
         marginBottom: 16,
-        color: "black"
+        backgroundColor: 'white',
+        width: width * 0.8,
+        alignSelf: 'center',
     },
     checkboxContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
+        justifyContent: 'center',
         marginBottom: 16,
     },
+    categoryText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#5d5d5d',
+        marginBottom: 8,
+        textAlign: 'center',
+    },
+    chip: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        margin: 4,
+    },
+    chipSelected: {
+        marginHorizontal: 4,
+        backgroundColor: "#4FC3F7",
+        borderColor: "#4FC3F7",
+    },
+    chipText: {
+        color: "#FFFFFF",
+    },
+    snackbar: {
+        maxWidth: 295,
+        alignSelf: 'center',
+    },
+    buttonContainer: {
+        justifyContent: 'space-between',
+        paddingHorizontal: 50, // Ajustez selon votre layout
+        marginTop: 20,
+    },
     button: {
-        marginTop: 8,
+        borderRadius: 15,
+        marginBottom: 5,
+        padding: 10,
+        elevation: 2, // Seulement pour Android
+        backgroundColor: '#4FC3F7',
+    },
+    submitButton: {
+        backgroundColor: '#4FC3F7', // Couleur pour le bouton Soumettre
+    },
+    resetButton: {
+        backgroundColor: '#EF5350', // Couleur pour le bouton Reset
+    },
+    buttonText: {
+        color: 'white',
+        textAlign: 'center',
     },
 });
