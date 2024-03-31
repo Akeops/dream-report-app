@@ -125,7 +125,7 @@ export default function DreamForm() {
                     style={[
                         styles.chip,
                         {
-                            backgroundColor: isLucidDream ? "#4FC3F7" : "#d1d1d1", // Bleu ciel pour sélectionné, gris sinon
+                            backgroundColor: isLucidDream ? "#7e71e1" : "#d1d1d1", // Bleu ciel pour sélectionné, gris sinon
                             borderColor: "#d1d1d1", // Gris pour la bordure
                         }
                     ]}
@@ -141,7 +141,7 @@ export default function DreamForm() {
                     style={[
                         styles.chip,
                         {
-                            backgroundColor: isNightmare ? "#b81d1d" : "#d1d1d1", // Orange pour sélectionné, gris sinon
+                            backgroundColor: isNightmare ? "#872d2d" : "#d1d1d1", // Orange pour sélectionné, gris sinon
                             borderColor: "#d1d1d1", // Gris pour la bordure, uniforme avec l'autre Chip
                         }
                     ]}
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#4FC3F7',
     },
     submitButton: {
-        backgroundColor: '#4FC3F7', // Couleur pour le bouton Soumettre
+        backgroundColor: '#549fdc', // Couleur pour le bouton Soumettre
     },
     resetButton: {
         backgroundColor: '#EF5350', // Couleur pour le bouton Reset
