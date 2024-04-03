@@ -15,32 +15,32 @@ export default function EditScreenInfo({ path }: { path: string }) {
           style={styles.getStartedText}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)">
-          Open up the code for this screen:
+          - <Text style={styles.boldText}>Enregistrement des rêves :</Text> Notez facilement le contenu de vos rêves, vos sentiments et tout ce qui vous semble pertinent.
         </Text>
-
-        <View
-          style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
-          darkColor="rgba(255,255,255,0.05)"
-          lightColor="rgba(0,0,0,0.05)">
-          <MonoText>{path}</MonoText>
-        </View>
-
         <Text
           style={styles.getStartedText}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)">
-          Change any of the text, save the file, and your app will automatically update.
+          - <Text style={styles.boldText}>Analyse des rêves :</Text> Grâce à notre intégration avec l'API MeaningCloud, obtenez des insights sur les thèmes et les motifs récurrents dans vos rêves.
+        </Text>
+        <Text
+            style={styles.getStartedText}
+            lightColor="rgba(0,0,0,0.8)"
+            darkColor="rgba(255,255,255,0.8)">
+          - <Text style={styles.boldText}>Catégorisation :</Text> Classez vos rêves en catégories comme lucides ou cauchemars, pour un suivi plus facile.
+        </Text>
+        <Text
+            style={styles.getStartedText}
+            lightColor="rgba(0,0,0,0.8)"
+            darkColor="rgba(255,255,255,0.8)">
+          - <Text style={styles.boldText}>Confidentialité garantie :</Text> Vos rêves sont privés et stockés en toute sécurité sur votre appareil.
         </Text>
       </View>
 
+
+
       <View style={styles.helpContainer}>
-        <ExternalLink
-          style={styles.helpLink}
-          href="https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet">
-          <Text style={styles.helpLinkText} lightColor={Colors.light.tint}>
-            Tap here if your app doesn't automatically update after making changes
-          </Text>
-        </ExternalLink>
+
       </View>
     </View>
   );
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 24,
     textAlign: 'center',
+    marginBottom: 5,
   },
   helpContainer: {
     marginTop: 15,
@@ -73,5 +74,8 @@ const styles = StyleSheet.create({
   },
   helpLinkText: {
     textAlign: 'center',
+  },
+  boldText: {
+    fontWeight: 'bold',
   },
 });

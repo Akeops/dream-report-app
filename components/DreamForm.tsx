@@ -8,6 +8,7 @@ import { DreamData } from '../models/types';
 const { width } = Dimensions.get('window');
 
 export default function DreamForm() {
+    const [titleText, setTitleText] = useState(''); // Ajout de cet état pour gérer le titre
     const [dreamText, setDreamText] = useState('');
     const [isLucidDream, setIsLucidDream] = useState(false);
     const [isNightmare, setIsNightmare] = useState(false);
@@ -31,6 +32,7 @@ export default function DreamForm() {
         try {
             const newDreamToPush: DreamData = {
                 id: uuidv4(),
+                title: titleText,
                 text: dreamText,
                 isLucid: isLucidDream,
                 isNightmare: isNightmare,
@@ -38,7 +40,8 @@ export default function DreamForm() {
                 apiInfo: {
                     conceptList: [],
                     entitiesList: []
-                }
+                },
+                date: new Date().toISOString()
             };
 
             const apiUrl = 'https://api.meaningcloud.com/topics-2.0';
@@ -73,10 +76,13 @@ export default function DreamForm() {
         } catch (error) {
             console.error('Erreur lors de la sauvegarde des données:', error);
         }
-        
+        await AsyncStorage.setItem('lastUpdate', Date.now().toString()); // Enregistrement de la date actuelle comme dernier update
+
         // Réinitialisation du formulaire
+        setTitleText('');
         setDreamText('');
         setIsLucidDream(false);
+        setIsNightmare(false);
     };
 
     const handleLucidDreamToggle = () => {
@@ -104,7 +110,16 @@ export default function DreamForm() {
             >
                 Le champ du rêve ne peut pas être vide.
             </Snackbar>
-
+            <TextInput
+                label="Titre"
+                value={titleText}
+                onChangeText={setTitleText} // Modification ici pour utiliser setTitleText
+                mode="outlined"
+                textColor={"black"}
+                multiline
+                numberOfLines={1} // Peut-être voulez-vous limiter le titre à une ligne
+                style={styles.input}
+            />
             <TextInput
                 label="Rêve"
                 value={dreamText}
