@@ -1,17 +1,14 @@
-// DreamsContext.tsx
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Dream {
     text: string;
     isLucidDream: boolean;
-    // Ajoutez d'autres champs selon votre modèle de données
 }
 
 interface DreamsContextType {
     dreams: Dream[];
     addDream: (newDream: Dream) => Promise<void>;
-    // Définissez d'autres fonctions au besoin
 }
 
 const DreamsContext = createContext<DreamsContextType | undefined>(undefined);

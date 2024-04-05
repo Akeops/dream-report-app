@@ -3,12 +3,12 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { TextInput, Snackbar, Chip, Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { v4 as uuidv4 } from 'uuid';
-import { DreamData } from '../models/types';
+import { DreamData } from '@/models/types';
 
 const { width } = Dimensions.get('window');
 
 export default function DreamForm() {
-    const [titleText, setTitleText] = useState(''); // Ajout de cet état pour gérer le titre
+    const [titleText, setTitleText] = useState('');
     const [dreamText, setDreamText] = useState('');
     const [isLucidDream, setIsLucidDream] = useState(false);
     const [isNightmare, setIsNightmare] = useState(false);
@@ -43,27 +43,6 @@ export default function DreamForm() {
                 },
                 date: new Date().toISOString()
             };
-
-            const apiUrl = 'https://api.meaningcloud.com/topics-2.0';
-            const language = 'fr';
-            const apiKey = ""; // Consider storing API keys securely
-
-            const formdata = new FormData();
-            formdata.append('key', apiKey);
-            formdata.append('txt', dreamText);
-            formdata.append('lang', language);
-
-            const requestOptions: RequestInit = {
-                method: 'POST',
-                body: formdata,
-                redirect: 'follow',
-            };
-
-            const response = await fetch(apiUrl, requestOptions);
-            const responseData = await response.json();
-
-            // newDreamToPush.apiInfo.conceptList = responseData.concept_list || [];
-            // newDreamToPush.apiInfo.entitiesList = responseData.entity_list || [];
 
             const existingData = await AsyncStorage.getItem('dreamFormDataArray');
             const formDataArray = existingData ? JSON.parse(existingData) : [];
@@ -113,11 +92,11 @@ export default function DreamForm() {
             <TextInput
                 label="Titre"
                 value={titleText}
-                onChangeText={setTitleText} // Modification ici pour utiliser setTitleText
+                onChangeText={setTitleText}
                 mode="outlined"
                 textColor={"black"}
                 multiline
-                numberOfLines={1} // Peut-être voulez-vous limiter le titre à une ligne
+                numberOfLines={1}
                 style={styles.input}
             />
             <TextInput
@@ -156,11 +135,11 @@ export default function DreamForm() {
                     style={[
                         styles.chip,
                         {
-                            backgroundColor: isNightmare ? "#872d2d" : "#d1d1d1", // Orange pour sélectionné, gris sinon
-                            borderColor: "#d1d1d1", // Gris pour la bordure, uniforme avec l'autre Chip
+                            backgroundColor: isNightmare ? "#872d2d" : "#d1d1d1",
+                            borderColor: "#d1d1d1",
                         }
                     ]}
-                    textStyle={[styles.chipText, isNightmare ? { color: "#FFFFFF" } : { color: "#000000" }]} // Blanc si sélectionné, noir sinon
+                    textStyle={[styles.chipText, isNightmare ? { color: "#FFFFFF" } : { color: "#000000" }]}
                 >
                     Cauchemar
                 </Chip>
@@ -232,21 +211,21 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         justifyContent: 'space-between',
-        paddingHorizontal: 50, // Ajustez selon votre layout
+        paddingHorizontal: 50,
         marginTop: 20,
     },
     button: {
         borderRadius: 15,
         marginBottom: 5,
         padding: 10,
-        elevation: 2, // Seulement pour Android
+        elevation: 2,
         backgroundColor: '#4FC3F7',
     },
     submitButton: {
-        backgroundColor: '#549fdc', // Couleur pour le bouton Soumettre
+        backgroundColor: '#549fdc',
     },
     resetButton: {
-        backgroundColor: '#EF5350', // Couleur pour le bouton Reset
+        backgroundColor: '#EF5350',
     },
     buttonText: {
         color: 'white',

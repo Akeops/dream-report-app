@@ -8,7 +8,7 @@ type ColorSchemeType = 'standard' | 'daltonien';
 const colorSchemes = {
   standard: {
     lucide: '#c0bff3',
-    cauchemar: '#c24040', // Rouge framboise: #E30B5D
+    cauchemar: '#c24040',
     ordinaire: '#dcdcdc',
   },
   daltonien: {
@@ -22,15 +22,12 @@ const DreamList: React.FC = () => {
   const [dreams, setDreams] = useState<DreamData[]>([]);
   const [showDeleteMessage, setShowDeleteMessage] = useState(false);
   const [colorScheme, setColorScheme] = useState<ColorSchemeType>('standard');
-  // Ajout d'un état pour la recherche
   const [searchQuery, setSearchQuery] = useState('');
-  // État pour les rêves filtrés
   const [filteredDreams, setFilteredDreams] = useState<DreamData[]>([]);
 
   const currentColors = colorSchemes[colorScheme] || colorSchemes.standard;
 
   useEffect(() => {
-    // Ajoutez la logique de filtrage ici chaque fois que `dreams` ou `searchQuery` change
     const filtered = dreams.filter(dream =>
         dream.text.toLowerCase().includes(searchQuery.toLowerCase()) ||
         dream.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -46,7 +43,7 @@ const DreamList: React.FC = () => {
   useEffect(() => {
     const fetchAndUpdateDreams = async () => {
       try {
-        const storedDreams = await AsyncStorage.getItem('dreamFormDataArray');
+        const storedDreams: string | null = await AsyncStorage.getItem('dreamFormDataArray');
         const lastUpdateStored = await AsyncStorage.getItem('lastUpdate');
         if (storedDreams) {
           const dreams = JSON.parse(storedDreams);
@@ -113,9 +110,9 @@ const DreamList: React.FC = () => {
               placeholder="Rechercher un rêve..."
               theme={{
                 colors: {
-                  primary: '#137ab6', // Couleur de la ligne sous le TextInput et du label quand il est actif
-                  text: '#000000', // Couleur du texte saisie
-                  placeholder: 'blue', // Couleur du placeholder
+                  primary: '#137ab6',
+                  text: '#000000',
+                  placeholder: 'blue',
                 },
               }}
           />
@@ -147,7 +144,7 @@ const DreamList: React.FC = () => {
               <Checkbox
                   status={dream.isChecked ? 'checked' : 'unchecked'}
                   onPress={() => handleCheckboxChange(dream.id)}
-                  color="#3d3d3d" // Couleur lorsque la case est cochée, ici un orange par exemple.
+                  color="#3d3d3d"
                   uncheckedColor="#4f4f4f" // Couleur lorsque la case n'est pas cochée
               />
               <View style={styles.dreamContent}>
@@ -168,7 +165,7 @@ const DreamList: React.FC = () => {
               <Button
                   title="Supprimer"
                   onPress={removeCheckedDreams}
-                  color="#549fdc" // Pour les boutons qui n'acceptent que la propriété color pour leur style
+                  color="#549fdc"
               />
             </View>
         )}
@@ -217,26 +214,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   searchContainer: {
-    flexDirection: 'row', // Assurez-vous que le champ de recherche et le bouton sont sur la même ligne
-    alignItems: 'center', // Alignement vertical pour s'assurer que le champ et le bouton sont centrés
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 10,
-    backgroundColor: 'transparent', // Arrière-plan du conteneur de recherche
-    borderRadius: 20, // Bords arrondis pour l'ensemble du conteneur de recherche
-    marginBottom: 20, // Espace en dessous du conteneur de recherche
+    backgroundColor: 'transparent',
+    borderRadius: 20,
+    marginBottom: 20,
   },
   searchInput: {
-    flex: 1, // Permet au champ de saisie de prendre la majeure partie de l'espace
+    flex: 1,
     fontSize: 16,
-    paddingHorizontal: 10, // Espace à gauche du texte
+    paddingHorizontal: 10,
     color: '#000000',
   },
   resetButton: {
-    // Suppression des bordures arrondies individuelles puisque le conteneur a déjà des bordures arrondies
-    padding: 8, // Espace autour du texte du bouton 'X'
-    marginLeft: 10, // Espace entre le champ de saisie et le bouton
+    padding: 8,
+    marginLeft: 10,
   },
   resetButtonText: {
-    color: '#555', // Couleur du texte 'X'
+    color: '#555',
     fontSize: 16,
   },
   dreamItem: {
@@ -268,18 +264,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   deleteButtonContainer: {
-    borderRadius: 20, // Coins arrondis pour le bouton
-    padding: 10, // Espace autour du texte du bouton
-    backgroundColor: '#549fdc', // Couleur de fond pour le bouton de suppression
-    marginTop: 10, // Espace au-dessus du bouton
-    marginBottom: 10, // Espace en dessous du bouton
-    elevation: 2, // Ombre sur Android
-    shadowOpacity: 0.3, // Opacité de l'ombre pour iOS
-    shadowRadius: 3, // Rayon de l'ombre pour iOS
-    shadowColor: '#000', // Couleur de l'ombre pour iOS
-    shadowOffset: { width: 0, height: 2 }, // Décalage de l'ombre pour iOS
-    alignSelf: 'center', // Centre le bouton dans son conteneur
-    width: '90%', // Largeur du bouton par rapport à son conteneur
+    borderRadius: 20,
+    padding: 10,
+    backgroundColor: '#549fdc',
+    marginTop: 10,
+    marginBottom: 10,
+    elevation: 2,
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    alignSelf: 'center',
+    width: '90%',
   },
   deleteMessage: {
     textAlign: 'center',
@@ -293,7 +289,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginRight: 8,
     paddingTop: 10,
-    textAlign: 'center', // Centrez le titre si désiré
+    textAlign: 'center',
   },
   titleAndDateContainer: {
     flexDirection: 'row',
@@ -304,7 +300,7 @@ const styles = StyleSheet.create({
   },
   dreamDate: {
     fontSize: 16,
-    color: '#000000', // Ajustez la couleur selon votre design
+    color: '#000000',
     marginLeft: 7,
     right: 0,
     top: 0,
