@@ -19,7 +19,7 @@ export default function DreamAnalysis() {
             const apiUrl = 'https://api.meaningcloud.com/topics-2.0';
             const language = 'fr';
             const tmpDream = dernierElement;
-            const apiKey = "def79177b09e93e1a62350af066fe041";
+            const apiKey = "VOTRE_CLE_API"; // Se référer au fichier README.md pour toutes informations sur l'accès à une clé API
             const formdata = new FormData();
             formdata.append('key', apiKey);
             formdata.append('txt', tmpDream);
