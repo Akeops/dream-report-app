@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import {View, Text, Button, StyleSheet, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface ApiResponse {
@@ -12,29 +12,32 @@ export default function DreamAnalysis() {
 
     const handleApiRequest = async () => {
         try {
-            const storedData = await AsyncStorage.getItem('monTableau');
-            const tableau = storedData ? JSON.parse(storedData) as string[] : [];
-            const dernierElement = tableau[tableau.length - 1] || "Mon texte par défaut";
+			const storedData = await AsyncStorage.getItem("dreamFormDataArray");
+			const tableau = storedData ? (JSON.parse(storedData) as string[]) : [];
+			let dernierElement = tableau[tableau.length - 1];
+			const tmpDream = dernierElement.text; // Accès direct à la propriété 'text'
 
-            const apiUrl = 'https://api.meaningcloud.com/topics-2.0';
-            const language = 'fr';
-            const tmpDream = dernierElement;
-            const apiKey = "VOTRE_CLE_API"; // Se référer au fichier README.md pour toutes informations sur l'accès à une clé API
-            const formdata = new FormData();
-            formdata.append('key', apiKey);
-            formdata.append('txt', tmpDream);
-            formdata.append('lang', language);
 
-            const requestOptions = {
-                method: 'POST',
-                body: formdata,
-            };
+			const apiUrl = "https://api.meaningcloud.com/topics-2.0";
+			const language = "fr";
+            //console.log(dernierElement.text);
+            console.log(tmpDream);
+			const apiKey = "VOTRE CLE API"; // Se référer au fichier README.md pour toutes informations sur l'accès à une clé API
+			const formdata = new FormData();
+			formdata.append("key", apiKey);
+			formdata.append("txt", tmpDream);
+			formdata.append("lang", language);
 
-            const response = await fetch(apiUrl, requestOptions);
-            const responseData = await response.json();
-            setApiResponse(responseData);
-            console.log('Réponse de l\'API MeaningCloud :', responseData);
-        } catch (error) {
+			const requestOptions = {
+				method: "POST",
+				body: formdata,
+			};
+
+			const response = await fetch(apiUrl, requestOptions);
+			const responseData = await response.json();
+			setApiResponse(responseData);
+			console.log("Réponse de l'API MeaningCloud :", responseData);
+		} catch (error) {
             console.error('Erreur lors de la requête à l\'API MeaningCloud :', error);
         }
     };
@@ -80,23 +83,26 @@ export default function DreamAnalysis() {
         <View>
             <Button title="Effectuer la requête à MeaningCloud" onPress={handleApiRequest} />
             {apiResponse && (
-                <View>
-                    <Text>Réponse de l'API :</Text>
+                <ScrollView>
                     {renderTable()}
-                </View>
+                </ScrollView>
             )}
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
-    tableHeader: {
-        flex: 1,
-        fontWeight: 'bold',
-        marginRight: 5,
-    },
-    tableCell: {
-        flex: 1,
-        marginRight: 5,
-    },
+	tableHeader: {
+		fontWeight: "bold",
+		flex: 1, // Utilisez flex pour que les en-têtes et les cellules s'ajustent automatiquement
+		textAlign: "center", // Centrer le texte dans l'en-tête
+		fontSize: 14, // Ajustez la taille de la police au besoin
+		padding: 5, // Ajustez le padding pour réduire l'espace si nécessaire
+	},
+	tableCell: {
+		flex: 1, // Utilisez flex pour que les en-têtes et les cellules s'ajustent automatiquement
+		textAlign: "center", // Centrer le texte dans la cellule
+		fontSize: 12, // Ajustez la taille de la police pour les cellules
+		padding: 5, // Ajustez le padding pour réduire l'espace si nécessaire
+	},
 });
