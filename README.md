@@ -52,8 +52,6 @@ The app employs AsyncStorage for local data storage on the device, ensuring user
 
 Below are screenshots depicting the app's UI:
 
-![Screenshot 1](<screenshot-link>)
-![Screenshot 2](<screenshot-link>)
-![Screenshot 3](<screenshot-link>)
-
-*Note: Replace `<screenshot-link>` with actual URLs to your screenshots.*
+![Screenshot1](https://github.com/Akeops/dream-report-app/blob/master/DreamForm.PNG?raw=true)
+![Screenshot2](https://github.com/Akeops/dream-report-app/blob/master/DreamList.PNG?raw=true)
+![Screenshot3](https://github.com/Akeops/dream-report-app/blob/master/DreamAnalysis.PNG?raw=true)
